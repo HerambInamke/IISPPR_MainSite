@@ -1,11 +1,13 @@
-const express = require("express");
-const cors = require("cors");
-const dotenv = require("dotenv");
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import adRoutes from "./routes/adRoutes.js";
+import connectDB from "./config/db.js";
 
 // Load env vars
 dotenv.config();
 
-const connectDB = require("./config/db");
+// Connect to database
 connectDB();
 
 const app = express();
@@ -20,7 +22,10 @@ app.get("/", (req, res) => {
   res.send("Mainsite running...");
 });
 
-// Listen
+// API routes
+app.use("/api/ads", adRoutes);
+
+// Listen for requests
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
