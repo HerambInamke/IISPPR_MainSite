@@ -5,7 +5,6 @@ import adRoutes from "./routes/adRoutes.js";
 import connectDB from "./config/db.js";
 
 // Load env vars
-dotenv.config();
 
 // Connect to database
 connectDB();
@@ -16,6 +15,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
+app.use("/api/articles", articleRoutes);
+
 
 // Test route
 app.get("/", (req, res) => {
