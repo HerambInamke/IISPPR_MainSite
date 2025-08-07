@@ -2,6 +2,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const pages = ["home", "about", "gallery", "reports", "articles", "testimonials"];
+const backend = import.meta.env.VITE_BASE_URL;
+
+const getAuthConfig = () => {
+  const token = localStorage.getItem("adminToken");
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+};
 
 const AdminAdManager = () => {
   const [allAds, setAllAds] = useState([]);
@@ -15,76 +25,49 @@ const AdminAdManager = () => {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]);
-  const backend = import.meta.env.VITE_BASE_URL;
-
-  console.log("allAds content:", allAds);
 
   useEffect(() => {
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+      window.location.href = "/admin/login"; // Redirect to login if not authenticated
+    }
     fetchAds();
     fetchPageAds();
   }, []);
 
   const fetchAds = async () => {
     try {
-      const res = await axios.get(`${backend}/api/ads`); // ✅ gets all ads from Advertisement model
-      setAllAds(res.data); // res.data is an array
+      const res = await axios.get(`${backend}/api/ads`, getAuthConfig());
+      setAllAds(res.data);
     } catch (err) {
       console.error("Failed to fetch ads:", err);
     }
   };
 
-
-
   const fetchPageAds = async () => {
     try {
-      const res = await axios.get(`${backend}/api/pageads/getall`);
-
+      const res = await axios.get(`${backend}/api/pageads/getall`, getAuthConfig());
       const pageMap = {};
-
       res.data.data.forEach((entry) => {
-        const page = entry.page;
-        const position = entry.position;
-        const ads = entry.adIds;
-
-        if (!pageMap[page]) {
-          pageMap[page] = [];
-        }
-
-        ads.forEach((ad) => {
+        const { page, position, adIds } = entry;
+        if (!pageMap[page]) pageMap[page] = [];
+        adIds.forEach((ad) => {
           pageMap[page].push({ ...ad, position });
         });
       });
-
       setAssignedAds(pageMap);
     } catch (err) {
       console.error("Failed to fetch assigned ads:", err);
     }
   };
 
-
   const handleAssign = async (adId) => {
     try {
-      await axios.post(`${backend}/api/pageads`, {
-        adId,
-        pages: [activePage],
-        position: assignPosition,
-      });
-      setMessage("Ad assigned successfully.");
-      setShowAssignPanel(false);
-      fetchPageAds();
-    } catch (err) {
-      console.error("Failed to assign ad:", err);
-      setMessage("Failed to assign ad.");
-    }
-  };
-
-  const handleAssign1 = async (adId) => {
-    try {
-      await axios.post(`${backend}/api/pageads`, {
-        adId,
-        pages: [activePage],
-        position: assignPosition,
-      });
+      await axios.post(
+        `${backend}/api/pageads`,
+        { adId, pages: [activePage], position: assignPosition },
+        getAuthConfig()
+      );
       setMessage("Ad assigned successfully.");
       setShowAssignPanel(false);
       fetchPageAds();
@@ -98,15 +81,15 @@ const AdminAdManager = () => {
     try {
       await axios.delete(`${backend}/api/pageads/unassign`, {
         data: { adId, page: activePage, position },
+        ...getAuthConfig(),
       });
       setMessage("Ad unassigned successfully.");
       fetchPageAds();
     } catch (err) {
-      console.error("Failed to delete ad:", err.response?.data || err.message);
-      setMessage("Failed to delete ad.");
+      console.error("Failed to unassign ad:", err.response?.data || err.message);
+      setMessage("Failed to unassign ad.");
     }
   };
-
 
   const handleCreateAd = async (e) => {
     e.preventDefault();
@@ -122,7 +105,10 @@ const AdminAdManager = () => {
 
     try {
       await axios.post(`${backend}/api/ads`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+        },
       });
       setTitle("");
       setDescription("");
@@ -137,10 +123,10 @@ const AdminAdManager = () => {
 
   const handleDeleteAds = async () => {
     if (selectedIds.length === 0) return alert("Select ads to delete.");
-
     try {
       await axios.delete(`${backend}/api/ads`, {
         data: { ids: selectedIds },
+        ...getAuthConfig(),
       });
       setSelectedIds([]);
       fetchAds();
@@ -159,7 +145,7 @@ const AdminAdManager = () => {
     <div className="max-w-6xl mx-auto px-6 py-10 space-y-10">
       <h1 className="text-3xl font-bold text-gray-800">Admin Ad Manager</h1>
 
-      {/* Tabs */}
+      {/* Page Tabs */}
       <div className="flex flex-wrap gap-3">
         {pages.map((page) => (
           <button
@@ -180,7 +166,7 @@ const AdminAdManager = () => {
         ))}
       </div>
 
-      {/* Assigned Ads */}
+      {/* Assigned Ads Section */}
       <section className="bg-white border rounded-xl p-6 shadow">
         <h2 className="text-xl font-semibold text-gray-700 mb-4">
           Assigned Ads for "{activePage}"
@@ -199,7 +185,7 @@ const AdminAdManager = () => {
                       <img src={ad.imageUrl} alt={ad.title} className="w-full h-24 object-contain mb-2" />
                       <p className="text-sm font-medium text-gray-700 truncate">{ad.title}</p>
                       <button
-                        onClick={() => handleUnassign(ad._id,"top")}
+                        onClick={() => handleUnassign(ad._id, "top")}
                         className="mt-2 w-full text-sm text-red-600 hover:text-red-800 transition"
                       >
                         Unassign
@@ -218,7 +204,7 @@ const AdminAdManager = () => {
                       <img src={ad.imageUrl} alt={ad.title} className="w-full h-24 object-contain mb-2" />
                       <p className="text-sm font-medium text-gray-700 truncate">{ad.title}</p>
                       <button
-                        onClick={() => handleUnassign(ad._id,"bottom")}
+                        onClick={() => handleUnassign(ad._id, "bottom")}
                         className="mt-2 w-full text-sm text-red-600 hover:text-red-800 transition"
                       >
                         Unassign
