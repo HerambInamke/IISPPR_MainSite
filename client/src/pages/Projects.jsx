@@ -75,7 +75,7 @@ const Projects = () => {
             <p className="text-white/90 text-sm mb-2">
               To create lasting positive change by supporting projects that nurture people and the planet.
             </p>
-            <a href="#learn-more" className="text-lime-300 font-medium hover:text-lime-200 transition-colors duration-300 underline">Learn More →</a>
+            <a href="#learn-more" className="text-accent-light font-medium hover:text-accent-dark transition-colors duration-300 underline">Learn More →</a>
           </motion.div>
         </div>
       </motion.div>

@@ -110,13 +110,13 @@ const Reports = () => {
   }, []);
 
   return (
-    <div className="w-full font-[Playfair]">
+    <div className="w-full">
       {/* Stats Section */}
       <section className="bg-[#0F1B2B] w-full py-20 px-4 text-white">
         <div className="max-w-screen-xl mx-auto">
           <div className="flex flex-col lg:flex-row justify-between gap-10 mb-16">
             <div className="lg:w-1/2">
-              <h1 className="text-4xl sm:text-5xl font-bold mb-4">Reports</h1>
+              <h1 className="text-4xl sm:text-5xl font-bold mb-4 font-serif">Reports</h1>
               <p className="text-gray-300 test-lg">
                 Explore our comprehensive reports that highlight our impact and
                 the communities we serve. Each report provides insights into our
@@ -127,7 +127,7 @@ const Reports = () => {
 
           <div className="text-center mb-12">
             <p className="text-sm text-gray-400">Our Statistics</p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white font-serif">
               Our Impact Across The Years
             </h2>
           </div>
@@ -144,7 +144,7 @@ const Reports = () => {
       <section className="bg-white w-full py-20 px-4">
         <div className="max-w-screen-xl mx-auto">
           <div className="flex flex-col sm:flex-row justify-between items-center mb-10">
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#0F1B2B] mb-4 sm:mb-0">
+            <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-4 sm:mb-0 font-serif">
               Reports
             </h2>
             <div className="flex items-center border border-gray-300 rounded-full px-4 py-2 w-full sm:w-80">

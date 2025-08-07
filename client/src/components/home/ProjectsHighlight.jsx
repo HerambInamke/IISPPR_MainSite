@@ -47,10 +47,10 @@ const ProjectsHighlight = () => {
           variants={fadeInUp}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary font-serif mb-4">
             Projects
           </h2>
-          <p className="text-sm sm:text-base md:text-lg text-white/80 max-w-3xl mx-auto">
+          <p className="text-sm sm:text-base md:text-lg text-primary max-w-3xl mx-auto">
             Explore our impactful projects driving positive change in communities worldwide.
           </p>
         </motion.div>
