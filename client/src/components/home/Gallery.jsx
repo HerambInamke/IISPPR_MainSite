@@ -61,7 +61,7 @@ const GalleryCarousel = () => {
           variants={fadeInUp}
           className="flex flex-col md:flex-row justify-between items-center mb-10 px-4"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-primary mb-4 md:mb-0">Our Gallery</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-primary mb-4 md:mb-0 font-serif">Our Gallery</h2>
           <Link
             to="/gallery"
             className="inline-flex items-center gap-1 bg-accent text-primary px-5 py-2 rounded-full text-sm font-medium hover:bg-primary hover:text-white transition-colors"

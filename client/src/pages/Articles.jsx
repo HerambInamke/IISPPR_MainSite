@@ -29,7 +29,7 @@ const Articles = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">Research Publications</h2>
+      <h2 className="text-3xl font-bold mb-6 text-primary font-serif">Research Publications</h2>
 
       {loading ? (
         <p className="text-gray-600">Loading research articles...</p>

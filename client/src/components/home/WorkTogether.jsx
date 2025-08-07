@@ -23,7 +23,7 @@ const WorkTogether = () => {
       <div className="relative z-20 container mx-auto px-4 py-16 md:py-24">
         <div className="text-center mb-12">
           <h2 className="text-lg font-medium text-accent mb-2">About Us</h2>
-          <h3 className="text-3xl md:text-4xl font-bold text-primary mb-4">
+          <h3 className="text-3xl md:text-4xl font-bold text-primary mb-4 font-serif">
             Together We Can Make <br />
             A Greener World
           </h3>

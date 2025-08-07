@@ -8,33 +8,35 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#22370D',
-          light: '#3A5417',
-          dark: '#1A2608',
+          DEFAULT: '#0F172A', // Darkest blue (main navbar and footer)
+          light: '#1E293B',   // Slightly lighter variant
+          dark: '#0A192F',    // Even darker if you want deeper contrast
         },
         secondary: {
-          DEFAULT: '#606758',
-          light: '#7A8273',
-          dark: '#464D41',
+          DEFAULT: '#E2E8F0', // Light gray for backgrounds
+          light: '#F8FAFC',   // Almost white
+          dark: '#CBD5E1',    // Mid-tone gray-blue for cards
         },
         accent: {
-          DEFAULT: '#C3FF00',
-          light: '#D7FF4D',
-          dark: '#9FC700',
+          DEFAULT: '#F97316', // Bright orange
+          light: '#FB923C',   // Lighter hover
+          dark: '#EA580C',    // Darker pressed
         },
         overlay: {
-          dark: 'rgba(34, 55, 13, 0.8)',
-          light: 'rgba(34, 55, 13, 0.2)',
-        }
+          dark: 'rgba(15,23,42,0.8)',   // dark overlay using primary-dark
+          light: 'rgba(15,23,42,0.2)',
+        },
+        white: '#ffffff',
+        black: '#000000',
       },
-      keyframes:{
-        scroll:{
-          '0%':{transform:'translateY(0)'},
-          '100%':{transform:'translateY(-100%)'},
+      keyframes: {
+        scroll: {
+          '0%': { transform: 'translateY(0)' },
+          '100%': { transform: 'translateY(-100%)' },
         },
       },
-      animation:{
-        scroll:'scroll 30s linear infinite',
+      animation: {
+        scroll: 'scroll 30s linear infinite',
       },
     },
   },

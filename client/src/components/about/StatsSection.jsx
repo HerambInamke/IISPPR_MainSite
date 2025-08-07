@@ -84,7 +84,7 @@ const StatsSection = () => {
               viewport={{ once: true }}
               variants={fadeInUp}
               custom={i}
-              className="flex flex-col items-center p-4 sm:p-6 rounded-lg bg-secondary-light/20"
+              className="flex flex-col items-center p-4 sm:p-6 rounded-lg bg-accent/20"
             >
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
