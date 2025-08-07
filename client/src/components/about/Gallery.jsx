@@ -43,7 +43,7 @@ const GalleryCarousel = () => {
   const handleMouseLeave = () => instanceRef.current?.play();
 
   return (
-    <section className="relative bg-primary-light/25 pt-20 py-6 pb-20 px-2 sm:px-10 text-gray-900">
+    <section className="relative bg-secondary pt-20 py-6 pb-20 px-2 sm:px-10 text-gray-900">
       <div className="w-full max-w-7xl mx-auto px-2 md:px-8 select-none">
         <div className="flex flex-col md:flex-row justify-between items-center mb-6 px-2 sm:px-5">
           <h2 className="text-4xl font-semibold text-primary font-serif">
