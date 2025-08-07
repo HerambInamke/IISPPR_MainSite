@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const getAuthConfig = () => {
+  const token = localStorage.getItem("adminToken");
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+};
 const pages = [
   "home",
   "about",
@@ -25,13 +33,17 @@ const AdminAdManager = () => {
   const backend = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+      window.location.href = "/admin/login"; // Redirect to login if not authenticated
+    }
     fetchAds();
     fetchPageAds();
   }, []);
 
   const fetchAds = async () => {
     try {
-      const res = await axios.get(`${backend}/api/ads`);
+      const res = await axios.get(`${backend}/api/ads`, getAuthConfig());
       setAllAds(res.data);
     } catch (err) {
       console.error("Failed to fetch ads:", err);
@@ -40,14 +52,12 @@ const AdminAdManager = () => {
 
   const fetchPageAds = async () => {
     try {
-      const res = await axios.get(`${backend}/api/pageads/getall`);
+      const res = await axios.get(`${backend}/api/pageads/getall`, getAuthConfig());
       const pageMap = {};
       res.data.data.forEach((entry) => {
-        const page = entry.page;
-        const position = entry.position;
-        const ads = entry.adIds;
+        const { page, position, adIds } = entry;
         if (!pageMap[page]) pageMap[page] = [];
-        ads.forEach((ad) => {
+        adIds.forEach((ad) => {
           pageMap[page].push({ ...ad, position });
         });
       });
@@ -59,11 +69,11 @@ const AdminAdManager = () => {
 
   const handleAssign = async (adId) => {
     try {
-      await axios.post(`${backend}/api/pageads`, {
-        adId,
-        pages: [activePage],
-        position: assignPosition,
-      });
+      await axios.post(
+        `${backend}/api/pageads`,
+        { adId, pages: [activePage], position: assignPosition },
+        getAuthConfig()
+      );
       setMessage("Ad assigned successfully.");
       setShowAssignPanel(false);
       fetchPageAds();
@@ -77,12 +87,13 @@ const AdminAdManager = () => {
     try {
       await axios.delete(`${backend}/api/pageads/unassign`, {
         data: { adId, page: activePage, position },
+        ...getAuthConfig(),
       });
       setMessage("Ad unassigned successfully.");
       fetchPageAds();
     } catch (err) {
-      console.error("Failed to delete ad:", err.response?.data || err.message);
-      setMessage("Failed to delete ad.");
+      console.error("Failed to unassign ad:", err.response?.data || err.message);
+      setMessage("Failed to unassign ad.");
     }
   };
 
@@ -97,7 +108,10 @@ const AdminAdManager = () => {
 
     try {
       await axios.post(`${backend}/api/ads`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+        },
       });
       setTitle("");
       setDescription("");
@@ -115,6 +129,7 @@ const AdminAdManager = () => {
     try {
       await axios.delete(`${backend}/api/ads`, {
         data: { ids: selectedIds },
+        ...getAuthConfig(),
       });
       setSelectedIds([]);
       fetchAds();
